@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itheima.dao.AccountDao">
+<!--    增加-->
+    <insert id="saveAcccount">
+        insert into work
+        values(#{username},#{sex},#{Telephone},#{email},#{address},#{level},#{password},#{uname})
+    </insert>
+    <insert id="GYSadd">
+        insert into gongyingshang (gysid, username, Telephone, address,uname)
+            values (#{gysid},#{username},#{Telephone},#{address},#{uname});
+    </insert>
+    <insert id="CKAdd">
+        insert into cangkubiao (id, uname, shuliang, danjia)
+        values (null,#{uname}, #{shuliang}, #{danjia});
+    </insert>
+
+    <!--    修改 通过uname-->
+    <update id="updata">
+        update work set password=#{password} where uname=#{uname}
+    </update>
+    <update id="updaGYS">
+        update gongyingshang set Telephone=#{Telephone},address=#{address} where gysid=#{gysid}
+    </update>
+    <update id="updaHW">
+        update sangpinbiao set huowushuliang=#{huowushuliang} where uname=#{uname}
+    </update>
+    <update id="CKupdata">
+        update cangkubiao set shuliang=#{shuliang} where uname=#{uname}
+    </update>
+
+
+    <!--    删除-->
+    <delete id="deleteWork">
+            delete from work where uname=#{uname}
+    </delete>
+
+    <delete id="delGYS">
+        delete from gongyingshang where gysid=#{gysid}
+    </delete>
+    <delete id="CKdel">
+        delete from cangkubiao where id=#{id}
+    </delete>
+
+    <!--查找全部-->
+    <select id="findAll" resultType="cn.itheima.pojo.account">
+        select * from work
+    </select>
+<!--    模糊查询通过 username-->
+    <select id="FuzzyQuery" parameterType="string" resultType="cn.itheima.pojo.account">
+        select * from work where username like #{FuzzyQuery}
+    </select>
+<!--    通过uname查询-->
+    <select id="IdfindAll" resultType="cn.itheima.pojo.account">
+        select * from work
+           <where>
+                <if test="uname!=null">
+                    uname=#{uname}
+                </if>
+               <if test="username!=null">
+                   and username=#{username}
+               </if>
+           </where>
+    </select>
+
+
+    <select id="GysfindAll" resultType="cn.itheima.pojo.GYSUser">
+        select * from bysj.gongyingshang
+    </select>
+    <select id="IdGYSadd" resultType="cn.itheima.pojo.GYSUser">
+         select * from bysj.gongyingshang where gysid=#{gysid}
+    </select>
+    <select id="FuzzyQueryGYS" resultType="cn.itheima.pojo.GYSUser">
+        select * from gongyingshang where uname like #{uname}
+    </select>
+    <select id="HWfindAll" resultType="cn.itheima.pojo.HwUser">
+        select * from sangpinbiao
+    </select>
+    <select id="IdHWfindAll" resultType="cn.itheima.pojo.HwUser">
+        select * from sangpinbiao where uname=#{uname}
+    </select>
+    <select id="CKfindAll" resultType="cn.itheima.pojo.CkUser">
+        select * from cangkubiao
+    </select>
+    <select id="IdCKfindAll" resultType="cn.itheima.pojo.CkUser">
+        select * from cangkubiao where uname=#{uname}
+    </select>
+    <select id="HWFuzzy" resultType="cn.itheima.pojo.HwUser">
+        select * from cangkubiao where uname like #{uname}
+    </select>
+
+</mapper>
